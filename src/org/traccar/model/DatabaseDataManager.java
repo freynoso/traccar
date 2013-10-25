@@ -149,7 +149,7 @@ public class DatabaseDataManager implements DataManager {
             queryAddPosition.setDouble("longitude", position.getLongitude());
             queryAddPosition.setDouble("speed", position.getSpeed());
             queryAddPosition.setDouble("course", position.getCourse());
-            queryAddPosition.setDouble("power", position.getPower());
+            //queryAddPosition.setDouble("power", position.getPower());
             queryAddPosition.setString("address", position.getAddress());
             queryAddPosition.setString("extended_info", position.getExtendedInfo());
 
