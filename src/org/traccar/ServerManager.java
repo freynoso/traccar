@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+
 import org.jboss.netty.bootstrap.ConnectionlessBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -34,6 +35,7 @@ import org.jboss.netty.handler.codec.http.HttpRequestDecoder;
 import org.jboss.netty.handler.codec.http.HttpResponseEncoder;
 import org.jboss.netty.handler.codec.string.StringDecoder;
 import org.jboss.netty.handler.codec.string.StringEncoder;
+import org.traccar.akka.AkkaSupervisorActor;
 import org.traccar.geocode.GoogleReverseGeocoder;
 import org.traccar.geocode.ReverseGeocoder;
 import org.traccar.helper.Log;
@@ -77,6 +79,12 @@ public class ServerManager {
         return webServer;
     }
 
+    private AkkaSupervisorActor akkaSupervisorActor;
+
+    public AkkaSupervisorActor getAkkaSupervisorActor() {
+        return akkaSupervisorActor;
+    }
+
     private Properties properties;
 
     public Properties getProperties() {
@@ -100,6 +108,11 @@ public class ServerManager {
         dataManager = new DatabaseDataManager(properties);
 
         initGeocoder(properties);
+        
+        // Initialize Akka Supervisor Actor
+        if (Boolean.valueOf(properties.getProperty("akkaActor.enable"))) {
+        	akkaSupervisorActor = new AkkaSupervisorActor(properties);
+        }        
 
         initXexunServer("xexun");
         initGps103Server("gps103");
@@ -163,6 +176,7 @@ public class ServerManager {
         if (Boolean.valueOf(properties.getProperty("http.enable"))) {
             webServer = new WebServer(properties);
         }
+
     }
 
     public void start() {

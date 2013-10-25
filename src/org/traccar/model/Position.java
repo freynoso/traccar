@@ -15,12 +15,14 @@
  */
 package org.traccar.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Position information
  */
-public class Position {
+@SuppressWarnings("serial")
+public class Position implements Serializable {
 
     /**
      * Id

@@ -1,0 +1,15 @@
+.classpath
+.project
+.settings/
+setup/out/
+setup/traccar-linux-32.zip
+setup/traccar-linux-64.zip
+setup/traccar-linux-arm.zip
+setup/traccar-macosx-64.zip
+setup/traccar-windows-32.zip
+setup/traccar.run
+setup/tracker-server.zip
+setup/wrapper-delta-pack-3.5.20.tar.gz
+target/
+logs/
+/default-akka.cfg.xml

@@ -16,11 +16,13 @@
 package org.traccar;
 
 import java.net.InetSocketAddress;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.logging.LoggingHandler;
 import org.jboss.netty.handler.timeout.IdleStateHandler;
+import org.traccar.akka.AkkaSupervisorActor;
 import org.traccar.geocode.ReverseGeocoder;
 import org.traccar.helper.Log;
 import org.traccar.model.DataManager;
@@ -35,6 +37,7 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
     private Boolean loggerEnabled;
     private Integer resetDelay;
     private ReverseGeocoder reverseGeocoder;
+    private AkkaSupervisorActor akkaSupervisorActor;
 
     /**
      * Open channel handler
@@ -88,6 +91,7 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
         dataManager = serverManager.getDataManager();
         loggerEnabled = serverManager.isLoggerEnabled();
         reverseGeocoder = serverManager.getReverseGeocoder();
+        akkaSupervisorActor = serverManager.getAkkaSupervisorActor();
 
         String resetDelayProperty = serverManager.getProperties().getProperty(protocol + ".resetDelay");
         if (resetDelayProperty != null) {
@@ -115,7 +119,9 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
         if (reverseGeocoder != null) {
             pipeline.addLast("geocoder", new ReverseGeocoderHandler(reverseGeocoder));
         }
+        pipeline.addLast("akkaActor", new AkkaHandler(akkaSupervisorActor));
         pipeline.addLast("handler", new TrackerEventHandler(dataManager));
+        
         return pipeline;
     }
 
