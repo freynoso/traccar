@@ -203,7 +203,7 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
                 try {
                     position.setDeviceId(getDataManager().getDeviceByImei(id).getId());
                 } catch(Exception secondError) {
-                    Log.warning("Unknown device - " + imei + "(id - " + id + ")");
+                    Log.warning("Unknown device - " + imei + " (id - " + id + ")");
                     return null;
                 }
             }
@@ -218,7 +218,7 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
             position.setAltitude(Double.valueOf(parser.group(index++)));
 
             // Battery
-            position.setPower(Double.valueOf(parser.group(index++)));
+            extendedInfo.set("power", Double.valueOf(parser.group(index++)));
 
             // Charger
             String charger = parser.group(index++);
@@ -253,7 +253,7 @@ public class MegastekProtocolDecoder extends BaseProtocolDecoder {
             extendedInfo.set("gsm", parser.group(index++));
 
             // Battery
-            position.setPower(Double.valueOf(parser.group(index++)));
+            extendedInfo.set("battery", Double.valueOf(parser.group(index++)));
             
             extendedInfo.set("flags", parser.group(index++));
             extendedInfo.set("input", parser.group(index++));

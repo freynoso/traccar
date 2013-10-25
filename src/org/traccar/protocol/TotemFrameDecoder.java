@@ -20,11 +20,8 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
-import org.traccar.helper.ChannelBufferTools;
 
-public class H02FrameDecoder extends FrameDecoder {
-    
-    private static final int MESSAGE_LENGTH = 32;
+public class TotemFrameDecoder extends FrameDecoder {
 
     @Override
     protected Object decode(
@@ -32,28 +29,20 @@ public class H02FrameDecoder extends FrameDecoder {
             Channel channel,
             ChannelBuffer buf) throws Exception {
         
-        String marker = buf.toString(buf.readerIndex(), 1, Charset.defaultCharset());
-
-        while ((marker.equals(" ") || marker.equals("\r") || marker.equals("\n")) && buf.readableBytes() > 0) {
-            buf.skipBytes(1);
-            marker = buf.toString(buf.readerIndex(), 1, Charset.defaultCharset());
+        // Check minimum length
+        if (buf.readableBytes() < 10) {
+            return null;
         }
         
-        if (marker.equals("*")) {
+        // Trim end line
+        if (buf.getUnsignedShort(buf.readerIndex()) == 0x0d0a) {
+            buf.skipBytes(2);
+        }
 
-            // Return text message
-            Integer index = ChannelBufferTools.find(buf, buf.readerIndex(), buf.readableBytes(), "#");
-            if (index != null) {
-                return buf.readBytes(index + 1 - buf.readerIndex());
-            }
-            
-        } else if (marker.equals("$")) {
-
-            // Return binary message
-            if (buf.readableBytes() >= MESSAGE_LENGTH) {
-                return buf.readBytes(MESSAGE_LENGTH);
-            }
-            
+        // Read message
+        int length = Integer.parseInt(buf.toString(2, 2, Charset.defaultCharset()), 16);
+        if (length >= buf.readableBytes()) {
+            return buf.readBytes(length);
         }
 
         return null;

@@ -18,43 +18,29 @@ package org.traccar.protocol;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.frame.FrameDecoder;
-import org.traccar.helper.ChannelBufferTools;
+import org.jboss.netty.handler.codec.frame.LengthFieldBasedFrameDecoder;
 
-public class WondexFrameDecoder extends FrameDecoder {
+public class AtrackFrameDecoder extends LengthFieldBasedFrameDecoder {
+
+    private static final int KEEPALIVE_LENGTH = 12;
     
-    private static final int KEEP_ALIVE_LENGTH = 8;
-
+    public AtrackFrameDecoder() {
+        super(1024, 4, 2);
+    }
+    
     @Override
     protected Object decode(
             ChannelHandlerContext ctx,
             Channel channel,
             ChannelBuffer buf) throws Exception {
         
-        if (buf.readableBytes() < KEEP_ALIVE_LENGTH) {
-            return null;
+        // Keep alive message
+        if (buf.readableBytes() >= KEEPALIVE_LENGTH &&
+            buf.getUnsignedShort(buf.readerIndex()) == 0xfe02) {
+            channel.write(buf.readBytes(KEEPALIVE_LENGTH));
         }
 
-        if (buf.getUnsignedByte(buf.readerIndex()) == 0xD0) {
-
-            // Send response
-            ChannelBuffer frame = buf.readBytes(KEEP_ALIVE_LENGTH);
-            if (channel != null) {
-                channel.write(frame);
-            }
-
-        } else {
-
-            Integer index = ChannelBufferTools.find(buf, buf.readerIndex(), buf.readableBytes(), "\r\n");
-            if (index != null) {
-                ChannelBuffer frame = buf.readBytes(index - buf.readerIndex());
-                buf.skipBytes(2);
-                return frame;
-            }
-        
-        }
-
-        return null;
+        return super.decode(ctx, channel, buf);
     }
 
 }

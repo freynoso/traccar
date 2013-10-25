@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Anton Tananaev (anton.tananaev@gmail.com)
+ * Copyright 2012 - 2013 Anton Tananaev (anton.tananaev@gmail.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,36 +21,13 @@ import java.util.Date;
 /**
  * Position information
  */
-@SuppressWarnings("serial")
-public class Position implements Serializable {
+public class Position extends Data implements Serializable {
 
     /**
-     * Id
-     */
-    private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Device
-     */
-    private Long deviceId;
-
-    public Long getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(Long deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
      * Time (UTC)
      */
     private Date time;
@@ -142,19 +119,6 @@ public class Position implements Serializable {
     }
 
     /**
-     * Power
-     */
-    private Double power;
-
-    public Double getPower() {
-        return power;
-    }
-
-    public void setPower(Double power) {
-        this.power = power;
-    }
-
-    /**
      * Address
      */
     private String address;
@@ -165,19 +129,6 @@ public class Position implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    /**
-     * Extended information in XML format
-     */
-    private String extendedInfo;
-
-    public String getExtendedInfo() {
-        return extendedInfo;
-    }
-
-    public void setExtendedInfo(String extendedInfo) {
-        this.extendedInfo = extendedInfo;
     }
 
 }
