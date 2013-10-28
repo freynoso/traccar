@@ -22,7 +22,6 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
-
 import org.jboss.netty.bootstrap.ConnectionlessBootstrap;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.buffer.ChannelBuffers;
@@ -176,7 +175,6 @@ public class ServerManager {
         if (Boolean.valueOf(properties.getProperty("http.enable"))) {
             webServer = new WebServer(properties);
         }
-
     }
 
     public void start() {
@@ -866,7 +864,7 @@ public class ServerManager {
             serverList.add(new TrackerServer(this, new ServerBootstrap(), protocol) {
                 @Override
                 protected void addSpecificHandlers(ChannelPipeline pipeline) {
-                    pipeline.addLast("frameDecoder", new LengthFieldBasedFrameDecoder(1024, 4, 2, 6, 0));
+                    pipeline.addLast("frameDecoder", new AtrackFrameDecoder());
                     pipeline.addLast("objectDecoder", new AtrackProtocolDecoder(ServerManager.this));
                 }
             });
@@ -962,7 +960,7 @@ public class ServerManager {
             serverList.add(new TrackerServer(this, new ServerBootstrap(), protocol) {
                 @Override
                 protected void addSpecificHandlers(ChannelPipeline pipeline) {
-                    pipeline.addLast("frameDecoder", new LineBasedFrameDecoder(1024));
+                    pipeline.addLast("frameDecoder", new TotemFrameDecoder());
                     pipeline.addLast("stringDecoder", new StringDecoder());
                     pipeline.addLast("objectDecoder", new TotemProtocolDecoder(ServerManager.this));
                 }

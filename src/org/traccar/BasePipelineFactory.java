@@ -16,7 +16,6 @@
 package org.traccar;
 
 import java.net.InetSocketAddress;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;

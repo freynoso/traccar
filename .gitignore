@@ -12,4 +12,4 @@ setup/tracker-server.zip
 setup/wrapper-delta-pack-3.5.20.tar.gz
 target/
 logs/
-
+.gitignore

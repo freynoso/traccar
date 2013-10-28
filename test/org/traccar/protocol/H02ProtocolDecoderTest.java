@@ -20,6 +20,9 @@ public class H02ProtocolDecoderTest {
 
         assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
                 "*HQ,3800008786,V1,062507,V,3048.2437,N,03058.5617,E,000.00,000,250413,FFFFFBFF#", Charset.defaultCharset())));
+        
+        assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
+                "*HQ,4300256455,V1,111817,A,1935.5128,N,04656.3243,E,0.00,100,170913,FFE7FBFF#", Charset.defaultCharset())));
 
         assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
                 "*HQ,123456789012345,V1,155850,A,5214.5346,N,2117.4683,E,0.00,270.90,131012,ffffffff,000000,000000,000000,000000#", Charset.defaultCharset())));
@@ -59,6 +62,15 @@ public class H02ProtocolDecoderTest {
         
         assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
                 "*TH,2020916012,V4,S1,OK,pass_word,130305,050316,A,2212.8745,N,11346.6574,E,14.28,028,220902,FFFFFBFD#", Charset.defaultCharset())));
+        
+        assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
+                "*HQ,353588020068342,V1,062840,A,5241.1249,N,954.9490,E,0.00,0.00,231013,ffffffff,000106,000002,000203,004c87,24#", Charset.defaultCharset())));
+
+        assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
+                "*HQ,353505220903211,V1,075228,A,5227.5039,N,01032.8443,E,0.00,0,231013,FFFBFFFF,106,14, 201,2173#", Charset.defaultCharset())));
+
+        assertNotNull(decoder.decode(null, null, ChannelBuffers.copiedBuffer(
+                "*HQ,353505220903211,V1,140817,A,5239.3538,N,01003.5292,E,21.03,312,221013,FFFBFFFF,106,14, 203,1cd#", Charset.defaultCharset())));
         
         int[] buf1 = {0x24,0x27,0x05,0x17,0x11,0x09,0x21,0x33,0x39,0x14,0x06,0x13,0x50,0x02,0x58,0x49,0x00,0x01,0x43,0x37,0x82,0x2e,0x00,0x00,0x00,0xff,0xff,0xff,0xff,0xff,0x00,0x00};
         assertNotNull(decoder.decode(null, null, ChannelBuffers.wrappedBuffer(ChannelBufferTools.convertArray(buf1))));
