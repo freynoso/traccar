@@ -24,9 +24,10 @@ import java.util.Date;
 public class Position extends Data implements Serializable {
 
     /**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
      * Time (UTC)
      */
