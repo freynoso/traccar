@@ -107,11 +107,11 @@ public class ServerManager {
         dataManager = new DatabaseDataManager(properties);
 
         initGeocoder(properties);
-        
+
         // Initialize Akka Supervisor Actor
         if (Boolean.valueOf(properties.getProperty("akkaActor.enable"))) {
         	akkaSupervisorActor = new AkkaSupervisorActor(properties);
-        }        
+        }
 
         initXexunServer("xexun");
         initGps103Server("gps103");

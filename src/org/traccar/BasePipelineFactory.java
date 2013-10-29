@@ -120,7 +120,6 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
         }
         pipeline.addLast("akkaActor", new AkkaHandler(akkaSupervisorActor));
         pipeline.addLast("handler", new TrackerEventHandler(dataManager));
-        
         return pipeline;
     }
 

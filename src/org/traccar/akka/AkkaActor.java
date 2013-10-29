@@ -18,15 +18,12 @@ public class AkkaActor extends UntypedActor {
 	public void onReceive(Object message) {
 
 		if (message instanceof Position) {
-			Log.debug("Sending position to remote actor.");
 			Position position = (Position) message;
+			Log.debug("Sending position to remote actor.");
 			remote.tell(position, getSelf());
-			//getSelf().tell(akka.actor.PoisonPill.getInstance(), getSelf());
+			// getSelf().tell(akka.actor.PoisonPill.getInstance(), getSelf());
 			getContext().stop(getSelf());
-		} else {
-			Log.debug("Unknown message. " + message.toString());
 		}
-
 	}
 
 }

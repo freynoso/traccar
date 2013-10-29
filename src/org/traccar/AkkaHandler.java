@@ -5,13 +5,13 @@ import java.util.List;
 import org.jboss.netty.channel.ChannelHandler;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.MessageEvent;
-import org.jboss.netty.channel.SimpleChannelHandler;
+import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.traccar.akka.AkkaSupervisorActor;
 import org.traccar.helper.Log;
 import org.traccar.model.Position;
 
 @ChannelHandler.Sharable
-public class AkkaHandler extends SimpleChannelHandler {
+public class AkkaHandler extends SimpleChannelUpstreamHandler {
 
 	/**
 	 * Akka Client System
@@ -25,6 +25,7 @@ public class AkkaHandler extends SimpleChannelHandler {
 
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) {
+		ctx.sendUpstream(e);
 		if (e.getMessage() instanceof Position) {
 			sendPosition((Position) e.getMessage());
 		} else if (e.getMessage() instanceof List) {
@@ -33,6 +34,7 @@ public class AkkaHandler extends SimpleChannelHandler {
 				sendPosition(position);
 			}
 		}
+
 	}
 
 	private void sendPosition(Position position) {
